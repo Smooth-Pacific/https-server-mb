@@ -41,6 +41,6 @@ RUN apt-get install -y --no-install-recommends ssh \
 RUN chsh -s /bin/zsh $(whoami)
 
 # Copy profile
-COPY resources/.profile /root/.profile
-COPY resources/.vimrc /root/.vimrc
-COPY resources/.zshrc /root/.zshrc
+COPY misc/.profile /root/.profile
+COPY misc/.vimrc /root/.vimrc
+COPY misc/.zshrc /root/.zshrc
