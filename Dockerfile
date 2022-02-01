@@ -17,8 +17,14 @@ RUN apt-get install -y --no-install-recommends ssh \
                                                tree \
                                                zip \
                                                unzip \
-                                               build-essential \
                                                pkg-config \
+                                               libtool \
+                                               m4 \
+                                               automake \
+                                               libmicrohttpd-dev \
+                                               make \
+                                               cmake \
+                                               build-essential \
                                                clang \
                                                gdb \
                                                cscope \
@@ -34,8 +40,6 @@ RUN chsh -s /bin/zsh $(whoami)
 COPY .profile /root/.profile
 COPY .vimrc /root/.vimrc
 COPY .zshrc /root/.zshrc
-
-# TODO mount filesystem
 
 # Spew nonsense
 CMD ["echo", "run './root/setup.sh --all' setup the base environment"]
