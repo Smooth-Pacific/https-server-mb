@@ -1,31 +1,19 @@
 - README
-    - [x] Week 1 Day 1
-    - [x] Week 1 Day 2
-    - [x] Week 1 Day 3
-    - [x] Week 1 Day 4
-    - [x] Week 1 Day 5
-    - [x] Week 2 Day 1
-    - [x] Week 2 Day 2
-    - [x] Week 2 Day 3
-    - [x] Week 2 Day 4
-    - [x] Week 2 Day 5
+  - [ ] Build Section
+  - [ ] Dependencies section
 
-- Solutions
-    - [x] Week 1 Day 1
-    - [x] Week 1 Day 2
-    - [x] Week 1 Day 3
-    - [x] Week 1 Day 4
-    - [x] Week 1 Day 5
-    - [ ] Week 2 Day 1
-    - [x] Week 2 Day 2
-    - [x] Week 2 Day 3
-    - [ ] Week 2 Day 4
-    - [ ] Week 2 Day 5
-
-- Templates
-    - [x] Makefile
-    - [ ] CMake
+- Server
+  - [ ] Get server running
+  - [ ] Make server face world
+  - [ ] Utilize environment variables
+  - [ ] Add testing support
 
 - Scripts
-    - [x] Setup Script (project structure)
-    - [x] Run Script (Spin up Dockerized environment)
+  - [ ] Setup Script (Docker environment)
+  - [x] Run Script (Run server with set environment variables)
+
+- Misc
+  - [x] resources
+    - [x] .profile
+    - [x] .vimrc
+    - [x] .zshrc

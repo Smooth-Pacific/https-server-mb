@@ -15,7 +15,7 @@ using namespace httpserver;
 
 class test_resource : public http_resource
 {
-  public:
+  public: // http_resource overloads
     const std::shared_ptr<http_response> render(const http_request&) {
         return std::shared_ptr<http_response>(new string_response("Testing."));
     }
@@ -23,19 +23,14 @@ class test_resource : public http_resource
 
 int main() {
 
-    // Create webserver model using environment variables
-    webserver ws = []{
-        uint16_t port = 8080;
-        if (auto tmp = getenv("PORT")) {
-            port = static_cast<uint16_t>(std::strtoul(tmp, nullptr, 10));
-        }
-        return create_webserver(port);
-    }();
+    // Create web-server model using environment variables
+    uint16_t port = getenv("PORT") ? static_cast<uint16_t>(std::strtoul(getenv("PORT"), nullptr, 10)) : 8080u;
+    webserver ws = create_webserver(port);
 
     test_resource res;
-    ws.register_resource("/hello", &res);
+    ws.register_resource("/", &res);
 
-    std::cout << "Starting server on localhost:" << 8080 << "...\n" << std::flush;
+    std::cout << "Starting server on localhost:" << port << "...\n" << std::flush;
     ws.start(true);
 
     return 0;

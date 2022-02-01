@@ -1,3 +1,7 @@
+# Creator:    VPR
+# Created:    January 27, 2022
+# Updated:    February 1, 2022
+
 FROM ubuntu:20.04
 
 # Set env to avoid user input interruption during installation
@@ -37,9 +41,6 @@ RUN apt-get install -y --no-install-recommends ssh \
 RUN chsh -s /bin/zsh $(whoami)
 
 # Copy profile
-COPY .profile /root/.profile
-COPY .vimrc /root/.vimrc
-COPY .zshrc /root/.zshrc
-
-# Spew nonsense
-CMD ["echo", "run './root/setup.sh --all' setup the base environment"]
+COPY resources/.profile /root/.profile
+COPY resources/.vimrc /root/.vimrc
+COPY resources/.zshrc /root/.zshrc
