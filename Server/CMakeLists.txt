@@ -26,6 +26,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Bin)
 ## Application executable and link dependencies
 add_executable(${TARGET} ${SOURCES})
 
+## Add link directories
+target_link_directories(${TARGET} PRIVATE /usr/local/lib)
+
+## Link Dependencies
+target_link_libraries(${TARGET} httpserver microhttpd)
+
 ## Add testing support
 #project("run-tests" CXX)
 #set(TESTS "run-tests")
@@ -48,4 +54,3 @@ add_executable(${TARGET} ${SOURCES})
 
 ## Test executable and link dependencies
 #add_executable(${TESTS} ${TEST_SOURCES} ${PROTO_SRCS}) 
-#target_link_libraries(${TESTS} ${Protobuf_LIBRARIES})

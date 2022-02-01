@@ -1,0 +1,3 @@
+[submodule "3rd-party/libhttpserver"]
+	path = 3rd-party/libhttpserver
+	url = https://github.com/etr/libhttpserver.git
