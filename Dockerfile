@@ -22,9 +22,11 @@ RUN apt-get install -y --no-install-recommends ssh \
                                                zip \
                                                unzip \
                                                pkg-config \
-                                               libtool \
                                                m4 \
+                                               alocal \
+                                               libtool \
                                                automake \
+                                               gnutls-bin \
                                                libmicrohttpd-dev \
                                                make \
                                                cmake \
