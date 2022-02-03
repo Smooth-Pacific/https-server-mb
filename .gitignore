@@ -33,9 +33,10 @@
 
 ### My ignores ###
 # Exclude Folders
-venv
+certs
 env
 out
+venv
 Bin
 Build
 
