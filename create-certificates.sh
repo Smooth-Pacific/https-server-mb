@@ -33,5 +33,11 @@ openssl genrsa -des3 -passout pass:${PASSWORD} -out local-CA.key 4096
 echo "${COUNTRY_NAME}\n${STATE}\n${LOCALE}\n${ORGANIZATION}\n${ORGANIZATION_UNIT}\n${COMMON_NAME}\n${EMAIL}\n" | \
 openssl req -x509 -new -nodes -key local-CA.key -sha256 -passin pass:${PASSWORD} -days 365 -out root-CA.pem
 
-# Change OS CA to match newly created CA
-# TODO
+# Convert .pem to .crt
+openssl x509 -outform der -in root-CA.pem -out root-CA.crt
+
+# Add newly created CA to list of CA's
+sudo cp root-CA.crt /usr/local/share/ca-certificates
+
+# Update certs
+sudo update-ca-certificates
