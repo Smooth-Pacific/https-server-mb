@@ -7,7 +7,7 @@ set -e errexit
 set -e nounset
 set -e xtrace
 
-PASSWORD="test_pass"
+PASSWORD="abcdefg"
 COUNTRY_NAME="US"
 STATE="STATE"
 LOCALE="CITY"
@@ -27,11 +27,11 @@ mkdir -p ~/certs
 cd ~/certs
 
 # Generate private key
-openssl genrsa -des3 -out local-CA.key 4096
+openssl genrsa -des3 -passout pass:${PASSWORD} -out local-CA.key 4096
 
 # Generate root certificate
 echo "${COUNTRY_NAME}\n${STATE}\n${LOCALE}\n${ORGANIZATION}\n${ORGANIZATION_UNIT}\n${COMMON_NAME}\n${EMAIL}\n" | \
-openssl req -x509 -new -nodes -key local-CA.key -sha256 -days 365 -out root-CA.pem
+openssl req -x509 -new -nodes -key local-CA.key -sha256 -passin pass:${PASSWORD} -days 365 -out root-CA.pem
 
 # Change OS CA to match newly created CA
 # TODO
