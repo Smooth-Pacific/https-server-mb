@@ -13,6 +13,8 @@ export IPV4=1
 export IPV6=0
 export TIMEOUT_MS=0
 export MAX_CONNECTIONS=5
+export MEM_CRT="${HOME}/certs/root-CA.crt"
+export MEM_KEY="${HOME}/certs/local-CA.key"
 
 if [ -f ./Bin/server.exe ];
 then

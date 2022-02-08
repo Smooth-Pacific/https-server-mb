@@ -1,0 +1,16 @@
+language: bash
+
+# Build Server 
+- make
+# Run server tests
+# - TODO
+
+# Run server
+- ./Server/Bin/utopia-server.exe & > /dev/null
+
+# Test server capalities while running
+language: python
+python:
+- "3.8.1"
+
+script: python Client/server-test.py
