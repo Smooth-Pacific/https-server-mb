@@ -2,7 +2,7 @@ PROJECT     = server
 
 CMAKE       = cmake
 TOOLCHAIN   = -DCMAKE_TOOLCHAIN_FILE="clang-toolchain.cmake"
-CMAKE_FLAGS =
+CMAKE_FLAGS = -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
 
 BUILD       = Build
 SOURCE      = Sources
@@ -22,7 +22,7 @@ debug: CMakeLists.txt
 
 .PHONY: $(OBJECTS)
 CMakeLists.txt: $(OBJECTS)
-	$(CMAKE) -B $(BUILD) $(TOOLCHAIN)
+	$(CMAKE) -B $(BUILD) $(TOOLCHAIN) $(CMAKE_FLAGS)
 
 clean:
 	rm -fr Bin/*

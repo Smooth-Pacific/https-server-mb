@@ -1,6 +1,6 @@
-#ifndef INCLUDE_HPP
-#define INCLUDE_HPP
+#ifndef INCLUDE_HEADER
+#define INCLUDE_HEADER
 
-// 0xDEADBEEF
+#define DEBUG
 
-#endif // INCLUDE_HPP
+#endif // INCLUDE_HEADER
