@@ -1,36 +1,47 @@
 /**
  * Creator:    VPR
  * Created:    January 27th, 2022
- * Updated:    February 1st, 2022
+ * Updated:    February 16th, 2022
  *
  * Description:
- *     - [x] Implement client-server model
+ *     - [ ] Implement Thread Pooling for CPUs with > 4 cores
+ *     - [ ] Implement Multi-threading per connection
+ *     - [ ] Implement Dedicated thread to perform Live Performance Monitoring
+ *     - [ ] Implement Digest Authentication for calls to server
+ *     - [x] Implement Custom Options
+ *     - [x] Implement TLS/HTTPS
 **/
 
-#include <httpserver.hpp>
+#include "ServerOptions.hpp"  // ServerOptions struct
+#include "Resources.hpp"      // Resource endpoints
+
+#include <httpserver.hpp>     // libhttpserver
 #include <iostream>
 #include <cstdlib>
-
-using namespace httpserver;
-
-class test_resource : public http_resource
-{
-  public: // http_resource overloads
-    const std::shared_ptr<http_response> render(const http_request&) {
-        return std::shared_ptr<http_response>(new string_response("Testing."));
-    }
-};
+#include <string>
 
 int main() {
 
-    // Create web-server model using environment variables
-    uint16_t port = getenv("PORT") ? static_cast<uint16_t>(std::strtoul(getenv("PORT"), nullptr, 10)) : 8080u;
-    webserver ws = create_webserver(port);
+    // Create Server Options struct
+    ServerOptions so;
+    // Create utopia-server using server options variables
+    webserver ws = create_webserver(so.Port())
+#ifndef NDEBUG
+        .debug()
+#endif // DEBUG
+        .use_ssl()
+        .https_mem_cert("/home/utopia/certs/server_ca/certs/smoothstack_server.crt")
+        .https_mem_key("/home/utopia/certs/server_ca/private/smoothstack_server.key")
+        .max_threads(so.MaxThreads());
 
-    test_resource res;
-    ws.register_resource("/", &res);
 
-    std::cout << "Starting server on localhost:" << port << "...\n" << std::flush;
+    // Create and set resource endpoints
+    root_resource root_res;
+    hello_resource hw_res;
+    ws.register_resource("/", &root_res);
+    ws.register_resource("/hello", &hw_res);
+
+    std::cout << "Started server with options:\n" << so << std::endl;
     ws.start(true);
 
     return 0;

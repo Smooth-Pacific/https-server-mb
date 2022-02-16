@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.8.0)
 
 ## Initialize project
-project("server.exe" CXX)
-set(TARGET "server.exe")
+project("utopia-server.exe" CXX)
+set(TARGET "utopia-server.exe")
 
 ## Include directories
 include_directories(${TARGET} ${CMAKE_SOURCE_DIR}/Includes)
@@ -17,7 +17,10 @@ set(SOURCES
     # CXX sources
     ${SOURCE_DIR}/Main.cpp
     # CXX includes
-    ${INCLUDE_DIR}/Include.hpp
+    ${INCLUDE_DIR}/HelloResource.hpp
+    ${INCLUDE_DIR}/Resources.hpp
+    ${INCLUDE_DIR}/RootResource.hpp
+    ${INCLUDE_DIR}/ServerOptions.hpp
 )
 
 ## Set output directory
