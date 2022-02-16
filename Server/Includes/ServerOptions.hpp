@@ -70,7 +70,7 @@ struct ServerOptions {
         os << "Host Address:\t\t"    << so.host_addr.c_str() << "\n";
         os << "Port:\t\t\t"          << so.port << "\n";
         os << "\n";
-        os << "Internet Protocol:\t" << (!so.internet_protocol ? "IPV4" : "IPV6") << "\n";
+        os << "Internet Protocol:\t" << (so.internet_protocol == IPV4_PROTOCOL ? "IPV4" : "IPV6") << "\n";
         os << "Max Connections:\t"   << so.max_connections << "\n";
         os << "Max Threads:\t\t"     << so.max_threads << "\n";
         os << "Timeout (ms):\t\t"    << so.timeout_ms << "\n";
