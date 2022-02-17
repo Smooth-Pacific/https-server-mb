@@ -44,7 +44,7 @@ struct ServerOptions {
         max_threads       = SetServerOption<uint8_t, 10>(max_threads, "MAX_THREADS");
         n_threads         = SetServerOption<uint8_t, 10>(n_threads, "N_THREADS");
         port              = SetServerOption<uint16_t, 10>(port, "PORT");
-        timeout           = SetServerOption<int32_t, 10>(timeout, "TIMEOUT_MS");
+        timeout           = SetServerOption<int32_t, 10>(timeout, "TIMEOUT");
         memory_limit      = SetServerOption<int32_t, 10>(memory_limit, "MEMORY_LIMIT");
         host_addr         = SetServerOption<std::string>(host_addr, "HOST");
         mem_cert          = SetServerOption<std::string>(mem_cert, "MEM_CERT");

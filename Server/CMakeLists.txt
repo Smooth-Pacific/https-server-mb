@@ -52,6 +52,7 @@ set(TESTS_DIR Tests)
 set(TEST_SOURCES
     # CXX sources
     ${TESTS_DIR}/TestSuite.cpp
+    ${TESTS_DIR}/TestServerOptions.cpp
     # CXX includes
     ${TESTS_DIR}/TestSuite.hpp
     ${TESTS_DIR}/TestServerOptions.hpp
