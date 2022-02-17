@@ -3,17 +3,14 @@
   - [ ] Dependencies section
 
 - Server
-  - [ ] Get server running
-  - [ ] Make server face world
-  - [ ] Utilize environment variables
   - [ ] Add testing support
+  - [x] Utilize environment variables
+  - [x] Get server running
 
 - Scripts
-  - [ ] Setup Script (Docker environment)
   - [x] Run Script (Run server with set environment variables)
 
 - Misc
-  - [x] resources
-    - [x] .profile
-    - [x] .vimrc
-    - [x] .zshrc
+  - [x] .profile
+  - [x] .vimrc
+  - [x] .zshrc
