@@ -18,6 +18,7 @@ set(SOURCES
     ${SOURCE_DIR}/Main.cpp
     # CXX includes
     ${INCLUDE_DIR}/HelloResource.hpp
+    ${INCLUDE_DIR}/PerformanceMonitor.hpp
     ${INCLUDE_DIR}/Resources.hpp
     ${INCLUDE_DIR}/RootResource.hpp
     ${INCLUDE_DIR}/ServerOptions.hpp
@@ -35,7 +36,7 @@ add_executable(${TARGET} ${SOURCES})
 target_link_directories(${TARGET} PRIVATE /usr/local/lib)
 
 ## Link Dependencies
-target_link_libraries(${TARGET} httpserver microhttpd)
+target_link_libraries(${TARGET} httpserver microhttpd pthread)
 
 ## Add testing support
 project("run-tests" CXX)
@@ -56,10 +57,11 @@ set(TEST_SOURCES
     # CXX includes
     ${TESTS_DIR}/TestSuite.hpp
     ${TESTS_DIR}/TestServerOptions.hpp
+    ${INCLUDE_DIR}/HelloResource.hpp
+    ${INCLUDE_DIR}/PerformanceMonitor.hpp
+    ${INCLUDE_DIR}/Resources.hpp
+    ${INCLUDE_DIR}/RootResource.hpp
     ${INCLUDE_DIR}/ServerOptions.hpp
-    #${INCLUDE_DIR}/HelloResource.hpp
-    #${INCLUDE_DIR}/Resources.hpp
-    #${INCLUDE_DIR}/RootResource.hpp
 )
 
 ## Test executable and link dependencies

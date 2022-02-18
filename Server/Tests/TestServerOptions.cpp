@@ -4,7 +4,8 @@
 #include <cassert>
 #include <cstring>
 
-void test_server_options_empty_environment() {
+[[nodiscard]]
+bool test_server_options_empty_environment() {
 
     // Store environment variables in ServerOptions struct
     ServerOptions so; 
@@ -19,9 +20,11 @@ void test_server_options_empty_environment() {
     assert(so.ThreadCount()      == 4); // TODO: Change to $n_proc
     assert(so.MemoryLimit()      == 32768);
 
+    return true;
 }
 
-void test_server_options_set_environment() {
+[[nodiscard]]
+bool test_server_options_set_environment() {
 
     // Store environment variables in ServerOptions struct
     ServerOptions so; 
@@ -36,4 +39,5 @@ void test_server_options_set_environment() {
     assert(so.ThreadCount()      == 4); // TODO: Change to $n_proc
     assert(so.MemoryLimit()      == 32768);
 
+    return true;
 }
