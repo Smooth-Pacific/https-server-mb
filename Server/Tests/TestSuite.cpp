@@ -1,15 +1,17 @@
-#include "TestSuite.hpp"
+#include "TestSuite.hpp" // TEST
 
 #include "TestServerOptions.hpp" 
+//#include "TestPerformanceMonitor.hpp" 
+//#include "TestHelloResource.hpp" 
+//#include "TestRootResource.hpp" 
 
 #include <iostream>
 #include <cstdlib>
 
-#define TEST(X) std::cout << "Testing: " << #X << std::endl;\
-                X();\
-                std::cout << "Test passed.\n\n"
-
 int main() {
+
+    unsigned passed = 0;
+    unsigned failed = 0;
 
     std::cout << "Test Suite\n";
     
@@ -25,6 +27,9 @@ int main() {
     //TEST(test_root_endpoint_PUT);
     //TEST(test_root_endpoint_POST);
     //TEST(test_root_endpoint_DELETE);
+
+    std::cout << "Passed: " << passed << "\n";
+    std::cout << "Failed: " << failed << "\n" << std::endl;
 
     return 0;
 }
