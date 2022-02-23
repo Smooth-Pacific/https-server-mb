@@ -16,6 +16,7 @@ set(SOURCE_DIR Sources)
 set(SOURCES
     # CXX sources
     ${SOURCE_DIR}/Main.cpp
+    ${SOURCE_DIR}/PerformanceMonitor.cpp
     # CXX includes
     ${INCLUDE_DIR}/HelloResource.hpp
     ${INCLUDE_DIR}/PerformanceMonitor.hpp
