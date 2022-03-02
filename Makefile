@@ -14,9 +14,9 @@ $(BIN):
 	mkdir -p $@
 
 clean:
-	cd server && make clean
+	cd Server && make clean
 	rm -fr Bin/*
 
 extra-clean:
-	cd server && make extra-clean
+	cd Server && make extra-clean
 	rm -fr Bin

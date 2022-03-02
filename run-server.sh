@@ -7,10 +7,9 @@ set -e errexit
 set -e nounset
 set -e xtrace
 
-export HOST="127.0.0.1"
+export INTERNET_PROTOCOL=0
 export PORT=8080
 
-export IPV4=0
 export TIMEOUT=30
 export MAX_CONNECTIONS=127
 export MAX_THREADS=8

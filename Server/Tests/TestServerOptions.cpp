@@ -10,7 +10,6 @@ bool test_server_options_empty_environment() {
     // Store environment variables in ServerOptions struct
     ServerOptions so; 
 
-    assert(!strncmp(so.HostAddr(), "127.0.0.1", 9));
     assert(so.Port() == 8080);
 
     assert(so.InternetProtocol() == IPV4_PROTOCOL);
@@ -29,7 +28,6 @@ bool test_server_options_set_environment() {
     // Store environment variables in ServerOptions struct
     ServerOptions so; 
 
-    assert(!strncmp(so.HostAddr(), "127.0.0.1", 9));
     assert(so.Port() == 8080);
 
     assert(so.InternetProtocol() == IPV4_PROTOCOL);

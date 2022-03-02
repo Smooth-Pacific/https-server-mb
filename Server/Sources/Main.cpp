@@ -1,10 +1,10 @@
 /**
  * Creator:    VPR
  * Created:    January 27th, 2022
- * Updated:    February 18th, 2022
+ * Updated:    March 1st, 2022
  *
  * Description:
- *     - [ ] Implement Digest Authentication for calls to server
+ *     - [x] Implement Digest Authentication for calls to server
  *     - [x] Implement Thread Pooling for CPUs with > 4 cores
  *     - [x] Implement Multi-threading per connection
  *     - [x] Implement Dedicated thread to perform Live Performance Monitoring
@@ -37,6 +37,11 @@ int main() {
         .max_connections(so.MaxConnections())
         .max_threads(so.MaxThreads())
         .memory_limit(so.MemoryLimit());
+
+    // Use IPV6
+    if (so.InternetProtocol() == IPV6_PROTOCOL) {
+        cw.use_ipv6();
+    }
 
     // Set server crt
     if (std::filesystem::is_regular_file(so.MemCert())) {

@@ -25,7 +25,6 @@ struct ServerOptions {
     uint16_t        port              : 16;   // Port number for the server to bind to
     int32_t         timeout           : 32;   // Time in seconds that the server will wait before refusing connections
     int32_t         memory_limit      : 32;   // Time in seconds that the server will wait before refusing connections
-    std::string     host_addr;                // Host address in IP form (i.e. 127.0.0.1)
     std::string     mem_cert;                 // Path to public server crt
     std::string     mem_key;                  // Path to private server key
   public: // Constructors
@@ -37,16 +36,14 @@ struct ServerOptions {
         , port(8080)
         , timeout(60)
         , memory_limit(32 * KILOBYTE)
-        , host_addr("127.0.0.1")
     {
         internet_protocol = SetServerOption<bool, 2>(internet_protocol, "INTERNET_PROTOCOL");
         max_connections   = SetServerOption<uint8_t, 10>(max_connections, "MAX_CONNECTIONS");
-        max_threads       = SetServerOption<uint8_t, 10>(max_threads, "MAX_THREADS");
+        max_threads       = SetServerOption<uint8_t, 10>(max_threads, "MAX_THREADS"); // possible replace with hardware
         n_threads         = SetServerOption<uint8_t, 10>(n_threads, "N_THREADS");
         port              = SetServerOption<uint16_t, 10>(port, "PORT");
         timeout           = SetServerOption<int32_t, 10>(timeout, "TIMEOUT");
         memory_limit      = SetServerOption<int32_t, 10>(memory_limit, "MEMORY_LIMIT");
-        host_addr         = SetServerOption<std::string>(host_addr, "HOST");
         mem_cert          = SetServerOption<std::string>(mem_cert, "MEM_CERT");
         mem_key           = SetServerOption<std::string>(mem_key, "MEM_KEY");
     }
@@ -55,7 +52,12 @@ struct ServerOptions {
     T SetServerOption(T& server_option, const char* env_variable) {
         char* result;
         if ((result = std::getenv(env_variable)) != NULL) {
-            return static_cast<T>(std::getenv(env_variable));
+            try { 
+                return static_cast<T>(std::getenv(env_variable));
+            } catch (...) {
+                std::cerr << "Fatal error: failed to set environment variable" << std::endl;
+                exit(-1);
+            }
         } else {
             return server_option;
         }
@@ -64,7 +66,12 @@ struct ServerOptions {
     T SetServerOption(T server_option, const char* env_variable) {
         char* result;
         if ((result = std::getenv(env_variable)) != NULL) {
-            return static_cast<T>(std::strtoul(std::getenv(env_variable), nullptr, base));
+            try {
+                return static_cast<T>(std::strtoul(std::getenv(env_variable), nullptr, base));
+            } catch (...) {
+                std::cerr << "Fatal error: failed to set environment variable" << std::endl;
+                exit(-1);
+            }
         } else {
             return server_option;
         }
@@ -77,12 +84,11 @@ struct ServerOptions {
     uint16_t    Port()             const { return port; };
     int32_t     Timeout()          const { return timeout; };
     int32_t     MemoryLimit()      const { return memory_limit; };
-    const char* HostAddr()         const { return host_addr.c_str(); };
     const char* MemCert()          const { return mem_cert.c_str(); };
     const char* MemKey()           const { return mem_key.c_str(); };
   public: // Friend functions
     friend std::ostream& operator << (std::ostream& os, const ServerOptions& so) {
-        os << "Host Address:\t\t"       << so.host_addr.c_str() << "\n";
+        os << "Host Address:\t\t"       << (so.internet_protocol == IPV4_PROTOCOL ? "127.0.0.1" : "0000:0000:0000:0000:0000:0000:0000:0001") << "\n";
         os << "Port:\t\t\t"             << so.port << "\n";
         os << "\n";
         os << "Internet Protocol:\t"    << (so.internet_protocol == IPV4_PROTOCOL ? "IPV4" : "IPV6") << "\n";
