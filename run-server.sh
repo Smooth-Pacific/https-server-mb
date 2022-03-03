@@ -12,8 +12,8 @@ export PORT=8080
 
 export TIMEOUT=30
 export MAX_CONNECTIONS=127
-export MAX_THREADS=8
-export N_THREADS=4
+export MAX_THREADS=$(nproc)
+export N_THREADS=$(($(nproc) - 1))
 export MEMORY_LIMIT=32768
 
 export MEM_CERT="${HOME}/certs/server_ca/certs/smoothstack_server.crt"
