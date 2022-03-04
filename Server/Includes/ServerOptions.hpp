@@ -162,7 +162,7 @@ struct ServerOptions {
         os << "Internet Protocol:\t"    << (so.internet_protocol == IPV4_PROTOCOL ? "IPV4" : "IPV6") << "\n";
         os << "Max Connections:\t"      << so.max_connections << "\n";
         os << "Max Threads:\t\t"        << so.max_threads << "\n";
-        os << "Threads Count:\t\t"      << so.n_threads << "\n";
+        os << "Thread Count:\t\t"      << so.n_threads << "\n";
         os << "Timeout:\t\t"            << so.timeout << "\n";
         os << "Memory Limit (bytes):\t" << so.memory_limit << "\n";
 
