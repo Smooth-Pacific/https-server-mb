@@ -7,6 +7,9 @@ set -e errexit
 set -e nounset
 set -e xtrace
 
+export AUTH_USER="username1"
+export AUTH_PASS="password1"
+
 export INTERNET_PROTOCOL=0
 export PORT=8080
 

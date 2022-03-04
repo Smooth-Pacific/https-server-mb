@@ -1,7 +1,7 @@
 /**
  * Creator:    VPR
  * Created:    January 27th, 2022
- * Updated:    March 1st, 2022
+ * Updated:    March 4th, 2022
  *
  * Description:
  *     - [x] Implement Digest Authentication for calls to server
@@ -14,6 +14,7 @@
 
 #include "PerformanceMonitor.hpp" // PerformanceMonitor
 #include "ServerOptions.hpp"      // ServerOptions struct
+#include "Authorization.hpp"      // Authorization
 #include "Resources.hpp"          // Resource endpoints
 
 #include <httpserver.hpp>         // libhttpserver
@@ -57,6 +58,11 @@ int main() {
     } else {
         std::cerr << "ERROR: Failed to find certificate authority key." << std::endl;
         exit(127);
+    }
+
+    // TODO
+    if (true /* so.DualEnabled() == true */) {
+        cw.use_dual_stack();
     }
 
     // Create web server and set resource endpoints

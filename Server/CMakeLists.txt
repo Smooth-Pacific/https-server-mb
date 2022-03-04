@@ -16,8 +16,10 @@ set(SOURCE_DIR Sources)
 set(SOURCES
     # CXX sources
     ${SOURCE_DIR}/Main.cpp
+    ${SOURCE_DIR}/Authorization.cpp
     ${SOURCE_DIR}/PerformanceMonitor.cpp
     # CXX includes
+    ${INCLUDE_DIR}/Authorization.hpp
     ${INCLUDE_DIR}/HelloResource.hpp
     ${INCLUDE_DIR}/PerformanceMonitor.hpp
     ${INCLUDE_DIR}/Resources.hpp
@@ -48,6 +50,7 @@ include_directories(${TESTS} ${CMAKE_CURRENT_BINARY_DIR}/Includes)
 include_directories(${TESTS} ${CMAKE_CURRENT_BINARY_DIR}/Tests)
 
 ## Source directories
+set(SOURCE_DIR Sources)
 set(TESTS_DIR Tests)
 
 ## Add CXX sources
@@ -55,9 +58,11 @@ set(TEST_SOURCES
     # CXX sources
     ${TESTS_DIR}/TestSuite.cpp
     ${TESTS_DIR}/TestServerOptions.cpp
+    ${SOURCE_DIR}/Authorization.cpp
     # CXX includes
     ${TESTS_DIR}/TestSuite.hpp
     ${TESTS_DIR}/TestServerOptions.hpp
+    ${INCLUDE_DIR}/Authorization.hpp
     ${INCLUDE_DIR}/HelloResource.hpp
     ${INCLUDE_DIR}/PerformanceMonitor.hpp
     ${INCLUDE_DIR}/Resources.hpp
