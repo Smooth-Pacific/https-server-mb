@@ -65,16 +65,30 @@ int main() {
         cw.use_dual_stack();
     }
 
+    // TODO
+    if (true /* so.DualEnabled() == true */) {
+        cw.per_IP_connection_limit(10);
+    }
+
+    // TODO
+    //if (true [> so.DualEnabled() == true <]) {
+        //cw.max_thread_stack_size(10);
+    //}
+
     // Create web server and set resource endpoints
     webserver ws = cw;
 
     root_resource   root_res;
     hello_resource  hw_res;
+    mime_resource   mime_res;
 
     ws.register_resource("/", &root_res);
     ws.register_resource("/hello", &hw_res);
+    ws.register_resource("/mime/{arg1}", &mime_res);
 #ifndef NDEBUG
     std::cout << "Starting server with options:\n" << so << std::endl;
+#else
+    // Log startup time with options
 #endif
 
     // Begin performance monitoring thread

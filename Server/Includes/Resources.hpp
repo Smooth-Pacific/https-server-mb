@@ -3,5 +3,6 @@
 
 #include "HelloResource.hpp"
 #include "RootResource.hpp"
+#include "MimeResource.hpp"
 
 #endif // RESOURCES_HEADER

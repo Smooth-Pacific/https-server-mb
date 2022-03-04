@@ -1,12 +1,12 @@
-#ifndef ROOT_RESOURCE_HEADER
-#define ROOT_RESOURCE_HEADER
+#ifndef MIME_RESOURCE_HEADER
+#define MIME_RESOURCE_HEADER
 
 #include "Authorization.hpp"
 #include <httpserver.hpp>
 
 using namespace httpserver;
 
-class root_resource : public http_resource, public Authorization {
+class mime_resource : public http_resource, public Authorization {
 public: // http_resource overloads
     const std::shared_ptr<http_response> render(const http_request&) {
         return std::shared_ptr<http_response>(new string_response("Welcome to the Utopia Server."));
@@ -60,4 +60,4 @@ public: // http_resource overloads
     }
 };
 
-#endif // ROOT_RESOURCE_HEADER
+#endif // MIME_RESOURCE_HEADER

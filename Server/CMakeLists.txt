@@ -21,6 +21,7 @@ set(SOURCES
     # CXX includes
     ${INCLUDE_DIR}/Authorization.hpp
     ${INCLUDE_DIR}/HelloResource.hpp
+    ${INCLUDE_DIR}/MimeResource.hpp
     ${INCLUDE_DIR}/PerformanceMonitor.hpp
     ${INCLUDE_DIR}/Resources.hpp
     ${INCLUDE_DIR}/RootResource.hpp

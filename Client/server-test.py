@@ -62,13 +62,11 @@ if __name__ == "__main__":
         sys.exit(1)
 
     # 100 iterations of digest authority stress testing
-    n_passed = 0
-    n_failed = 0
-    n_iterations = 20
+    n_passed, n_failed = 0, 0
+    n_iterations = 25
+    n_threads = 4
     for _ in range(n_iterations):
         threads = [ ]
-
-        n_threads = 4
         for _ in range(n_threads):
             threads.append(Thread(target=sendGetRequestToRoot))
             threads[-1].start()

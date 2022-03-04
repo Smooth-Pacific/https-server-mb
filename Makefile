@@ -3,13 +3,14 @@ PROJECT     = https-server
 BIN         = Bin
 SERVER      = Server
 
-all: $(SERVER)
+all: utopia-server
 
-.PHONY: server
-$(SERVER): $(BIN)
-	cd $(SERVER) && make
+.PHONY: $(SERVER)
+utopia-server: $(SERVER)
+	cd $(SERVER) && make release
 	cp $(SERVER)/Bin/utopia-server.exe ./Bin/utopia-server.exe
 
+.PHONY: bin
 $(BIN):
 	mkdir -p $@
 

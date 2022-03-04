@@ -14,9 +14,11 @@ OBJECTS     = $(patsubst $(SOURCE)/%.cpp,$(BUILD)/CMakeFiles/$(PROJECT).dir/$(SO
 all: $(PROJECT)
 $(PROJECT): debug
 
+.PHONY: release
 release: CMakeLists.txt
 	$(CMAKE) --build $(BUILD) --config Release
 
+.PHONY: debug
 debug: CMakeLists.txt
 	$(CMAKE) --build $(BUILD) --config Debug
 
