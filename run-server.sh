@@ -1,6 +1,6 @@
 # Creator:   VPR
 # Created:   February 1st, 2022
-# Updated:   February 16th, 2022
+# Updated:   March 5, 2022
 
 set -e pipefail
 set -e errexit
@@ -11,13 +11,18 @@ export AUTH_USER="username1"
 export AUTH_PASS="password1"
 
 export INTERNET_PROTOCOL=0
+export USE_DUAL_STACK=1
 export PORT=8080
 
-export TIMEOUT=30
-export MAX_CONNECTIONS=127
-export MAX_THREADS=$(nproc)
 export N_THREADS=$(($(nproc) - 1))
+export MAX_THREAD_STACK_SIZE=-1
+export MAX_THREADS=$(nproc)
+
+export CONTENT_SIZE_LIMIT=-1
+export PER_CONNECTION_IP=10
+export MAX_CONNECTIONS=127
 export MEMORY_LIMIT=32768
+export TIMEOUT=30
 
 export MEM_CERT="${HOME}/certs/server_ca/certs/smoothstack_server.crt"
 export MEM_KEY="${HOME}/certs/server_ca/private/smoothstack_server.key"

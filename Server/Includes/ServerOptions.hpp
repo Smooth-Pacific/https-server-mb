@@ -18,30 +18,42 @@
 #define KILOBYTE 1024
 #endif // KILOBYTE
 
+#ifndef MEGABYTE
+#define MEGABYTE KILOBYTE * KILOBYTE
+#endif // MEGABYTE
+
 struct ServerOptions {
-  private: // Member variables
-    bool            internet_protocol :  8;    // 0 for IPV4 and 1 for IPV6
-    uint32_t        max_connections   :  8;    // Maximum connections supported by each thread
-    uint32_t        max_threads       :  8;    // Maximum number of threads that the server will sustain
-    uint32_t        n_threads         :  8;    // Number of threads the server will start with
-    uint16_t        port              : 16;    // Port number for the server to bind to
-    int32_t        timeout            : 32;    // Time in seconds that the server will wait before refusing connections
-    int32_t        memory_limit       : 32;    // Time in seconds that the server will wait before refusing connections
-    std::string     mem_cert;                  // Path to public server crt
-    std::string     mem_key;                   // Path to private server key
-  public: // Constructors
+private: // Member variables
+    bool            internet_protocol       :  4;    // 0 for IPV4 and 1 for IPV6
+    bool            dual_stack_enabled      :  4;    // Allow IPV4 and IPV6 connectivity
+    uint32_t        max_connections         :  8;    // Maximum connections supported by each thread
+    uint32_t        max_threads             :  8;    // Maximum number of threads that the server will sustain
+    uint32_t        n_threads               :  8;    // Number of threads the server will start with
+    uint16_t        per_IP_connection_limit : 16;    // TODO
+    uint16_t        port                    : 16;    // Port number for the server to bind to
+    uint32_t        content_size_limit      : 32;    // TODO
+    int32_t         timeout                 : 32;    // Time in seconds that the server will wait before refusing connections
+    int32_t         memory_limit            : 32;    // Time in seconds that the server will wait before refusing connections
+    int32_t         max_thread_stack_size   : 32;    // TODO
+    std::string     mem_cert;                        // Path to public server crt
+    std::string     mem_key;                         // Path to private server key
+public: // Constructors
     ServerOptions()
         : internet_protocol(IPV4_PROTOCOL)
+        , dual_stack_enabled(true)
         , max_connections(255)
         , max_threads(std::thread::hardware_concurrency())
         , n_threads(1)
+        , per_IP_connection_limit(10)
         , port(8080)
+        , content_size_limit(64 * MEGABYTE)
         , timeout(60)
         , memory_limit(32 * KILOBYTE)
+        , max_thread_stack_size(0)
     {
         internet_protocol = SetServerOption<bool, 2>(internet_protocol, "INTERNET_PROTOCOL");
         max_connections   = SetServerOption<uint32_t, 10>(max_connections, "MAX_CONNECTIONS");
-        max_threads       = SetServerOption<uint32_t, 10>(max_threads, "MAX_THREADS"); // possible replace with hardware
+        max_threads       = SetServerOption<uint32_t, 10>(max_threads, "MAX_THREADS");
         n_threads         = SetServerOption<uint32_t, 10>(n_threads, "N_THREADS");
         port              = SetServerOption<uint16_t, 10>(port, "PORT");
         timeout           = SetServerOption<int32_t, 10>(timeout, "TIMEOUT");
@@ -57,7 +69,7 @@ struct ServerOptions {
         ValidateTimeout();
         ValidateMemoryLimit();
     }
-  private: // Helper functions
+private: // Helper functions
     template <typename T>
     T SetServerOption(T& server_option, const char* env_variable) {
         char* result;
@@ -86,7 +98,7 @@ struct ServerOptions {
             return server_option;
         }
     }
-
+private: // Constant helper functions
     void ValidateMaxConnections() const {
         if (max_connections < 0 || max_connections > 255) {
             std::cerr << "Initialization error: MAX_CONNECTIONS\n"
@@ -145,24 +157,28 @@ struct ServerOptions {
         }
     }
   public: // Constant functions
-    bool        InternetProtocol() const { return internet_protocol; };
-    uint16_t    MaxConnections()   const { return max_connections; };
-    uint16_t    MaxThreads()       const { return max_threads; };
-    uint16_t    ThreadCount()      const { return n_threads; };
-    uint16_t    Port()             const { return port; };
-    int32_t     Timeout()         const { return timeout; };
-    int32_t     MemoryLimit()     const { return memory_limit; };
-    const char* MemCert()          const { return mem_cert.c_str(); };
-    const char* MemKey()           const { return mem_key.c_str(); };
+    bool        InternetProtocol()     const { return internet_protocol; };
+    bool        DualStackEnabled()     const { return dual_stack_enabled; };
+    uint16_t    MaxConnections()       const { return max_connections; };
+    uint16_t    MaxThreads()           const { return max_threads; };
+    uint16_t    ThreadCount()          const { return n_threads; };
+    uint16_t    PerIpConnectionLimit() const { return per_IP_connection_limit; }
+    uint16_t    Port()                 const { return port; };
+    int32_t     Timeout()              const { return timeout; };
+    int32_t     MemoryLimit()          const { return memory_limit; };
+    uint32_t    ContentSizeLimit()     const { return content_size_limit; };
+    int32_t     MaxThreadStackSize()   const { return max_thread_stack_size; };
+    const char* MemCert()              const { return mem_cert.c_str(); };
+    const char* MemKey()               const { return mem_key.c_str(); };
   public: // Friend functions
     friend std::ostream& operator << (std::ostream& os, const ServerOptions& so) {
-        os << "Host Address:\t\t"       << (so.internet_protocol == IPV4_PROTOCOL ? "127.0.0.1" : "0000:0000:0000:0000:0000:0000:0000:0001") << "\n";
+        os << "Host Address:\t\t"       << (so.internet_protocol == IPV4_PROTOCOL ? "127.0.0.1" : "[::1]") << "\n";
         os << "Port:\t\t\t"             << so.port << "\n";
         os << "\n";
         os << "Internet Protocol:\t"    << (so.internet_protocol == IPV4_PROTOCOL ? "IPV4" : "IPV6") << "\n";
         os << "Max Connections:\t"      << so.max_connections << "\n";
         os << "Max Threads:\t\t"        << so.max_threads << "\n";
-        os << "Thread Count:\t\t"      << so.n_threads << "\n";
+        os << "Thread Count:\t\t"       << so.n_threads << "\n";
         os << "Timeout:\t\t"            << so.timeout << "\n";
         os << "Memory Limit (bytes):\t" << so.memory_limit << "\n";
 

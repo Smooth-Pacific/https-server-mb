@@ -2,3 +2,6 @@
 -IIncludes
 -Wall
 -Wextra
+-Werror
+-Wshadow
+-Wconversion

@@ -6,11 +6,38 @@
 #include <chrono>
 #include <thread>
 #include <string>
+#include <ctime>
 
-#include <sys/sysinfo.h>
-#include <sys/times.h>
-#include <sys/types.h>
-#include <unistd.h>
+//#include <sys/sysinfo.h>
+//#include <sys/times.h>
+//#include <sys/types.h>
+//#include <unistd.h>
+
+#define DT_FORMAT       "[%Y-%m-%d %H:%M:%S %Z]"
+#define DT_FORMAT_SIZE  32
+
+static inline std::string GetCurrentTime() {
+
+    using std::string;
+
+    string      time_fmt;
+    char        buffer[DT_FORMAT_SIZE]{0};
+    time_t      time;
+    tm*         ptm;
+
+    std::time(&time);
+    ptm = localtime(&time);
+
+    strftime(buffer, sizeof(buffer), DT_FORMAT, ptm);
+    time_fmt = buffer;
+
+    return time_fmt;
+
+}
+
+//static inline std::string GetSystemName() {
+    //return 0;
+//}
 
 void PerformanceMonitor::operator () (void) {
 
@@ -37,10 +64,8 @@ void PerformanceMonitor::operator () (void) {
         exit(3);
     }
 
-    // Init time
-    auto time_now = std::chrono::system_clock::now();
-    auto ct = std::chrono::system_clock::to_time_t(time_now);
-    fs << std::ctime(&ct);
+    // Log time of initiation
+    fs << GetCurrentTime() << "\n";
     fs.flush();
     
     while (true) {
@@ -48,7 +73,7 @@ void PerformanceMonitor::operator () (void) {
         fs << "Doing Performance Monitoring\n";
         fs.flush();
 
-        auto time_ms = 3'000u;
+        auto time_ms = 12'500u;
         std::this_thread::sleep_for(std::chrono::milliseconds(time_ms));
     }
 

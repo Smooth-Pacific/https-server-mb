@@ -1,7 +1,7 @@
 /**
  * Creator:    VPR
  * Created:    January 27th, 2022
- * Updated:    March 4th, 2022
+ * Updated:    March 5th, 2022
  *
  * Description:
  *     - [x] Implement Digest Authentication for calls to server
@@ -30,13 +30,20 @@ int main() {
     // Create utopia-server using server options variables
     ServerOptions so;
     create_webserver cw = create_webserver(so.Port())
+        .use_ssl()
+        .regex_checking()
+        .deferred()
 #ifndef NDEBUG
         .debug()
-#endif // DEBUG
-        .use_ssl()
+#else
+        .pedantic()
+#endif // NDEBUG
+        .per_IP_connection_limit(so.PerIpConnectionLimit())
         .connection_timeout(so.Timeout())
+        .content_size_limit(so.ContentSizeLimit())
         .max_connections(so.MaxConnections())
         .max_threads(so.MaxThreads())
+        .max_thread_stack_size(so.MaxThreadStackSize())
         .memory_limit(so.MemoryLimit());
 
     // Use IPV6
@@ -60,20 +67,10 @@ int main() {
         exit(127);
     }
 
-    // TODO
-    if (true /* so.DualEnabled() == true */) {
+    // Enable dual stack
+    if (so.DualStackEnabled()) {
         cw.use_dual_stack();
     }
-
-    // TODO
-    if (true /* so.DualEnabled() == true */) {
-        cw.per_IP_connection_limit(10);
-    }
-
-    // TODO
-    //if (true [> so.DualEnabled() == true <]) {
-        //cw.max_thread_stack_size(10);
-    //}
 
     // Create web server and set resource endpoints
     webserver ws = cw;
@@ -92,8 +89,6 @@ int main() {
 #endif
 
     // Begin performance monitoring thread
-    //auto performance_thread = std::thread(PerformanceMonitor());
-    //performance_thread.join();
     auto performance_thread = std::async(std::launch::async, PerformanceMonitor());
 
     // Start web server

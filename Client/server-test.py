@@ -50,8 +50,8 @@ def sendGetRequestToRoot() -> None:
 if __name__ == "__main__":
 
     # Set global variables
-    if os.environ.get("HOST"):
-        HOST = os.environ.get("HOST")
+    if os.environ.get("HOST_ADDR"):
+        HOST = os.environ.get("HOST_ADDR")
     if os.environ.get("PORT"):
         PORT = os.environ.get("PORT")
     if os.environ.get("AUTH_USER"):
