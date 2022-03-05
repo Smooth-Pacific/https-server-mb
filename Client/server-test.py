@@ -9,16 +9,15 @@
 
 import os
 import sys
-# import requests
 
 from threading import Thread
 from requests.auth import HTTPDigestAuth
 from requests import (
     Session
 )
-###################
-# Setup variables #
-###################
+#####################
+## Setup variables ##
+#####################
 
 AUTH_USER="username1"
 AUTH_PASS="password1"
@@ -26,20 +25,20 @@ AUTH_PASS="password1"
 HOST = "127.0.0.1" 
 PORT = 8080
 
-PUBLIC_CERT="/usr/local/share/ca-certificates/smoothstack_root.crt"
+CERT_MEM="/usr/local/share/ca-certificates/smoothstack_root.crt"
 
-##################
-# Test functions #
-##################
+####################
+## Test functions ##
+####################
 
 def sendGetRequestToRoot() -> None:
     global n_passed, n_failed
 
     s = Session()
     s.auth = HTTPDigestAuth(username=AUTH_USER, password=AUTH_PASS)
-    s.verify = PUBLIC_CERT
+    s.verify = CERT_MEM
 
-    # Test / endpoint (root)
+    # Test "/" endpoint (root)
     resp = s.get(f"https://{HOST}:{PORT}/")
     s.close()
 
@@ -52,9 +51,15 @@ if __name__ == "__main__":
 
     # Set global variables
     if os.environ.get("HOST"):
-        host = os.environ.get("HOST")
+        HOST = os.environ.get("HOST")
     if os.environ.get("PORT"):
-        port = os.environ.get("PORT")
+        PORT = os.environ.get("PORT")
+    if os.environ.get("AUTH_USER"):
+        AUTH_USER = os.environ.get("AUTH_USER")
+    if os.environ.get("AUTH_PASS"):
+        AUTH_PASS = os.environ.get("AUTH_PASS")
+    if os.environ.get("CERT_MEM"):
+        CERT_MEM = os.environ.get("CERT_MEM")
 
     # Check if server is running
     if os.system(f"nc -vz {HOST} {PORT}"):
