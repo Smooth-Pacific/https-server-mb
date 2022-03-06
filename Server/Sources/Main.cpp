@@ -33,6 +33,7 @@ int main() {
         .use_ssl()
         .regex_checking()
         .deferred()
+        .ban_system()
 #ifndef NDEBUG
         .debug()
 #else

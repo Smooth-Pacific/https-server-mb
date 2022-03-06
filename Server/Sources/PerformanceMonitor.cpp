@@ -13,14 +13,19 @@
 //#include <sys/types.h>
 //#include <unistd.h>
 
-#define DT_FORMAT       "[%Y-%m-%d %H:%M:%S %Z]"
-#define DT_FORMAT_SIZE  32
+#define DT_FORMAT       "%Y-%m-%d %H:%M:%S %Z"
+#define DT_FORMAT_SIZE  30
 
+#ifndef LOG_ERR_EXIT
+#define LOG_ERR_EXIT    5
+#endif // LOG_ERR_EXIT
+
+[[nodiscard]]
 static inline std::string GetCurrentTime() {
 
     using std::string;
 
-    string      time_fmt;
+    string      current_time{"[Date]\n"};
     char        buffer[DT_FORMAT_SIZE]{0};
     time_t      time;
     tm*         ptm;
@@ -29,19 +34,130 @@ static inline std::string GetCurrentTime() {
     ptm = localtime(&time);
 
     strftime(buffer, sizeof(buffer), DT_FORMAT, ptm);
-    time_fmt = buffer;
+    current_time += buffer;
+    current_time += "\n";
 
-    return time_fmt;
+    return current_time;
 
 }
 
-//static inline std::string GetSystemName() {
-    //return 0;
-//}
+[[nodiscard]]
+static inline std::string GetSystemHardware() {
+
+    using std::string;
+
+    string system_hardware{"[System Hardware]\n"};
+    system_hardware.reserve(1024 * 4);
+
+    std::ifstream ifs("/proc/cpuinfo");
+    if (ifs.is_open()) {
+        string buffer(256, 0);
+        for (size_t i = 0; ifs.good(); i++) {
+            std::getline(ifs, buffer);
+
+            if (buffer.starts_with("\n")) {
+                continue;
+            } else if ( buffer.starts_with("model name")
+                        || buffer.starts_with("cpu M")
+                        || buffer.starts_with("cache")
+                        || buffer.starts_with("vendor")
+                        || buffer.starts_with("address")
+                        || buffer.starts_with("core id") )
+            {
+                system_hardware += buffer + "\n";
+            } else if (buffer.starts_with("power")) {
+                system_hardware += "\n";
+            }
+        }
+        system_hardware = system_hardware.substr(0, system_hardware.length()-1);
+    } else {
+        std::cerr << "Failed to open '/proc/cpuinfo'\n" << std::flush;
+        exit(LOG_ERR_EXIT);
+    }
+
+    return system_hardware;
+    
+}
+
+[[nodiscard]]
+static inline std::string GetSystemMemory() {
+
+    using std::string;
+
+    string system_memory{"[System Memory]\n"};
+    system_memory.reserve(1024);
+
+    std::ifstream ifs("/proc/meminfo");
+    if (ifs.is_open()) {
+        string buffer(256, 0);
+        for (size_t i = 0; ifs.good(); i++) {
+            std::getline(ifs, buffer);
+
+            if (buffer.starts_with("\n")) {
+                continue;
+            }
+            if ( buffer.starts_with("Mem") || buffer.starts_with("Active") || buffer.starts_with("Swap") ) {
+                system_memory += buffer + "\n";
+            }
+        }
+    } else {
+        std::cerr << "Failed to open '/proc/meminfo'\n" << std::flush;
+        exit(LOG_ERR_EXIT);
+    }
+
+    return system_memory;
+}
+
+[[nodiscard]]
+static inline std::string GetProcessInformation() {
+
+    using std::string;
+
+    string process_info{"[Process Information]\n"};
+    process_info.reserve(1024);
+
+    std::ifstream ifs("/proc/self/status");
+    if (ifs.is_open()) {
+        string buffer(256, 0);
+        for (size_t i = 0; ifs.good(); i++) {
+            std::getline(ifs, buffer);
+
+            if (buffer.starts_with("\n")) {
+                continue;
+            }
+            if ( buffer.starts_with("Name")
+                 || buffer.starts_with("Pid")
+                 || buffer.starts_with("PPid")
+                 || buffer.starts_with("Vm")
+                 || buffer.starts_with("Gid")
+                 || buffer.starts_with("Uid")
+                 || buffer.starts_with("Thread") )
+            {
+                process_info += buffer + "\n";
+            }
+        }
+    } else {
+        std::cerr << "Failed to open '/proc/self/status'\n" << std::flush;
+        exit(LOG_ERR_EXIT);
+    }
+
+    return process_info;
+
+}
+
+[[nodiscard]]
+static inline std::string GetSystemResources() {
+
+    using std::string;
+
+
+    
+    return 0;
+}
 
 void PerformanceMonitor::operator () (void) {
 
-    const std::string full_path = [this]() -> const std::string {
+    const auto full_path = [this]() -> const std::string {
         std::string _full_path;
         _full_path.reserve(256);
         _full_path += file_path;
@@ -61,18 +177,23 @@ void PerformanceMonitor::operator () (void) {
 
     if (!fs.is_open()) {
         std::cerr << "Failed to open '" << full_path << "'" << std::endl;
-        exit(3);
+        exit(LOG_ERR_EXIT);
     }
 
-    // Log time of initiation
-    fs << GetCurrentTime() << "\n";
+    // Initial performance log
+    fs << GetCurrentTime()        << "\n"
+       << GetSystemHardware()     << "\n"
+       << GetSystemMemory()       << "\n"
+       << GetProcessInformation() << "\n"
+       << GetSystemResources()    << "\n";
     fs.flush();
-    
-    while (true) {
-        // System monitoring
-        fs << "Doing Performance Monitoring\n";
-        fs.flush();
 
+    while (true) {
+
+        /**
+         * Live System monitoring (...)
+        **/
+        
         auto time_ms = 12'500u;
         std::this_thread::sleep_for(std::chrono::milliseconds(time_ms));
     }

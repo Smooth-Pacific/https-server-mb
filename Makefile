@@ -6,11 +6,11 @@ SERVER      = Server
 all: utopia-server
 
 .PHONY: $(SERVER)
-utopia-server: $(SERVER)
+utopia-server: $(BIN) $(SERVER)
 	cd $(SERVER) && make release
 	cp $(SERVER)/Bin/utopia-server.exe ./Bin/utopia-server.exe
 
-.PHONY: bin
+.PHONY: $(BIN)
 $(BIN):
 	mkdir -p $@
 
