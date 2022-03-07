@@ -1,6 +1,8 @@
 #ifndef HELLO_RESOURCE
 #define HELLO_RESOURCE
 
+#include "Logger.hpp"
+
 #include <httpserver.hpp>
 
 using namespace httpserver;

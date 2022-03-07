@@ -17,10 +17,14 @@ set(SOURCES
     # CXX sources
     ${SOURCE_DIR}/Main.cpp
     ${SOURCE_DIR}/Authorization.cpp
+    ${SOURCE_DIR}/Logger.cpp
     ${SOURCE_DIR}/PerformanceMonitor.cpp
+    ${SOURCE_DIR}/ServerOptions.cpp
     # CXX includes
     ${INCLUDE_DIR}/Authorization.hpp
+    ${INCLUDE_DIR}/FileResource.hpp
     ${INCLUDE_DIR}/HelloResource.hpp
+    ${INCLUDE_DIR}/Logger.hpp
     ${INCLUDE_DIR}/MimeResource.hpp
     ${INCLUDE_DIR}/PerformanceMonitor.hpp
     ${INCLUDE_DIR}/Resources.hpp
@@ -60,11 +64,14 @@ set(TEST_SOURCES
     ${TESTS_DIR}/TestSuite.cpp
     ${TESTS_DIR}/TestServerOptions.cpp
     ${SOURCE_DIR}/Authorization.cpp
+    ${SOURCE_DIR}/Logger.cpp
+    ${SOURCE_DIR}/ServerOptions.cpp
     # CXX includes
     ${TESTS_DIR}/TestSuite.hpp
     ${TESTS_DIR}/TestServerOptions.hpp
     ${INCLUDE_DIR}/Authorization.hpp
     ${INCLUDE_DIR}/HelloResource.hpp
+    ${INCLUDE_DIR}/Logger.hpp
     ${INCLUDE_DIR}/PerformanceMonitor.hpp
     ${INCLUDE_DIR}/Resources.hpp
     ${INCLUDE_DIR}/RootResource.hpp

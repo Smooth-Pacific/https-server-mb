@@ -79,18 +79,20 @@ int main() {
     root_resource   root_res;
     hello_resource  hw_res;
     mime_resource   mime_res;
+    file_resource   file_res;
 
     ws.register_resource("/", &root_res);
     ws.register_resource("/hello", &hw_res);
+    ws.register_resource("/content", &file_res);
     ws.register_resource("/mime/{arg1}", &mime_res);
 #ifndef NDEBUG
-    std::cout << "Starting server with options:\n" << so << std::endl;
+    std::cout << "+ Starting server with options:\n" << so << std::endl;
 #else
     // Log startup time with options
 #endif
 
     // Begin performance monitoring thread
-    auto performance_thread = std::async(std::launch::async, PerformanceMonitor());
+    auto performance_thread = std::async(std::launch::async, PerformanceMonitor(), std::ref(so));
 
     // Start web server
     ws.start(true);

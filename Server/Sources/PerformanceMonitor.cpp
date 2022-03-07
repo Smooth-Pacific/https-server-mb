@@ -13,8 +13,14 @@
 //#include <sys/types.h>
 //#include <unistd.h>
 
+
+#ifndef DT_FORMAT
 #define DT_FORMAT       "%Y-%m-%d %H:%M:%S %Z"
+#endif // DT_FORMAT
+
+#ifndef DT_FORMAT_SIZE
 #define DT_FORMAT_SIZE  30
+#endif // DT_FORMAT_SIZE
 
 #ifndef LOG_ERR_EXIT
 #define LOG_ERR_EXIT    5
@@ -34,8 +40,7 @@ static inline std::string GetCurrentTime() {
     ptm = localtime(&time);
 
     strftime(buffer, sizeof(buffer), DT_FORMAT, ptm);
-    current_time += buffer;
-    current_time += "\n";
+    current_time += string(buffer) + "\n";
 
     return current_time;
 
@@ -155,7 +160,7 @@ static inline std::string GetSystemResources() {
     return 0;
 }
 
-void PerformanceMonitor::operator () (void) {
+void PerformanceMonitor::operator () (const ServerOptions& so) {
 
     const auto full_path = [this]() -> const std::string {
         std::string _full_path;
@@ -180,22 +185,27 @@ void PerformanceMonitor::operator () (void) {
         exit(LOG_ERR_EXIT);
     }
 
-    // Initial performance log
-    fs << GetCurrentTime()        << "\n"
-       << GetSystemHardware()     << "\n"
-       << GetSystemMemory()       << "\n"
-       << GetProcessInformation() << "\n"
-       << GetSystemResources()    << "\n";
+    // Log server options on startup
+    fs << GetCurrentTime() << "\n";
+    fs << "[Starting Server]\n";
+    fs << so << "\n";
     fs.flush();
 
     while (true) {
 
         /**
-         * Live System monitoring (...)
+         * Live system performance logging
         **/
-        
+        fs << GetCurrentTime()        << "\n"
+           << GetSystemHardware()     << "\n"
+           << GetSystemMemory()       << "\n"
+           << GetProcessInformation() << "\n"
+           << GetSystemResources()    << "\n";
+        fs.flush();
+
         auto time_ms = 12'500u;
         std::this_thread::sleep_for(std::chrono::milliseconds(time_ms));
+
     }
 
 }

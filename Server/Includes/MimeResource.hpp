@@ -2,6 +2,8 @@
 #define MIME_RESOURCE_HEADER
 
 #include "Authorization.hpp"
+#include "Logger.hpp"
+
 #include <httpserver.hpp>
 
 using namespace httpserver;

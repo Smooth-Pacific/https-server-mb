@@ -4,5 +4,6 @@
 #include "HelloResource.hpp"
 #include "RootResource.hpp"
 #include "MimeResource.hpp"
+#include "FileResource.hpp"
 
 #endif // RESOURCES_HEADER

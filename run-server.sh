@@ -7,16 +7,16 @@ set -e errexit
 set -e nounset
 set -e xtrace
 
-export AUTH_USER="username1"
-export AUTH_PASS="password1"
+export AUTH_USER="username"
+export AUTH_PASS="password"
 
 export INTERNET_PROTOCOL=0
-export USE_DUAL_STACK=1
+export USE_DUAL_STACK=0
 export PORT=8080
 
-export N_THREADS=$(($(nproc) - 1))
-export MAX_THREAD_STACK_SIZE=-1
-export MAX_THREADS=$(nproc)
+export MAX_THREAD_STACK_SIZE=0
+export MAX_THREADS=$(( $(nproc) * 4 ))
+export N_THREADS=$(( $(nproc) - 1 ))
 
 export CONTENT_SIZE_LIMIT=-1
 export PER_CONNECTION_IP=10
@@ -29,7 +29,7 @@ export MEM_KEY="${HOME}/certs/server_ca/private/smoothstack_server.key"
 
 if [ -f ./Bin/utopia-server.exe ];
 then
-    ./Bin/utopia-server.exe
+    exec Bin/utopia-server.exe
 else
     printf "'server.exe' not found.\n"
     exit
