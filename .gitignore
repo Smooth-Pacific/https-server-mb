@@ -33,6 +33,7 @@
 
 ### My ignores ###
 # Exclude Folders
+read_write_test
 logs
 certs
 env

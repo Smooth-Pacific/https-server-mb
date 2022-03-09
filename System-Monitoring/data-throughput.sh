@@ -2,7 +2,7 @@
 
 # Creator:    VPR
 # Created:    March 6th, 2022
-# Updated:    March 6th, 2022
+# Updated:    March 9th, 2022
 
 # Description:
 #     Uses lsblk, blkid, ioping, fio
@@ -51,7 +51,7 @@ function ioping-test {
 # Perform random reads from sda with 1Mb block size.
 function read-sda {
     RANDREAD_FILE="fio_randread.out"
-    printf "[fio]\n"             >> "${LOG_DIR}/${LOG_FILE}"
+    printf "[fio-randread-sda]\n"             >> "${LOG_DIR}/${LOG_FILE}"
     fio --name=randread --filename=/dev/sda \
         --size=2Gb --rw=randread --bs=1M    \
         --direct=1 --numjobs=8              \
@@ -67,7 +67,7 @@ function read-sda {
 # Perform random reads from sdb with 1Mb block size.
 function read-sdb {
     RANDREAD_FILE="fio_randread.out"
-    printf "[fio]\n"             >> "${LOG_DIR}/${LOG_FILE}"
+    printf "[fio-randread-sdb]\n"             >> "${LOG_DIR}/${LOG_FILE}"
     fio --name=randread --filename=/dev/sdb \
         --size=2Gb --rw=randread --bs=1M    \
         --direct=1 --numjobs=8              \
@@ -80,6 +80,33 @@ function read-sdb {
     printf "\n" >> "${LOG_DIR}/${LOG_FILE}"
 }
 
+# Perform random reads from sdb with 1Mb block size.
+function read-write {
+    if ! [ -d read_write_test ];
+    then
+        mkdir -p read_write_test
+    fi
+
+    RANDREAD_FILE="fio_readwrite.out"
+    printf "[fio-read-write]\n"             >> "${LOG_DIR}/${LOG_FILE}"
+    fio --name=readwrite --filename=read_write_test \
+        --size=1Gb --rw=rw --bs=1M                  \
+        --direct=1 --numjobs=8                      \
+        --ioengine=libaio --iodepth=8               \
+        --group_reporting --runtime=30s             \
+        --startdelay=30 > "/tmp/${RANDREAD_FILE}"
+
+    awk '/IOPS/ {print $2 $3 $4}' "/tmp/${RANDREAD_FILE}" >> "${LOG_DIR}/${LOG_FILE}"
+    tail -n 2 "/tmp/${RANDREAD_FILE}" >> "${LOG_DIR}/${LOG_FILE}"
+    printf "\n" >> "${LOG_DIR}/${LOG_FILE}"
+
+    rm -fr read_write_test
+}
+
+#########################
+##### Begin Testing #####
+#########################
+
 # Add date of test to log
 printf "[date]\n"            >> "${LOG_DIR}/${LOG_FILE}"
 date +"%Y-%m-%d %H:%M:%S %Z" >> "${LOG_DIR}/${LOG_FILE}"
@@ -90,3 +117,5 @@ ioping-test
 
 if [ "$(lsblk | grep 'sda')" ]; then read-sda; fi
 if [ "$(lsblk | grep 'sdb')" ]; then read-sdb; fi
+
+read-write
