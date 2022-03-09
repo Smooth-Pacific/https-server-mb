@@ -16,9 +16,9 @@ int main() {
     std::cout << "Test Suite\n";
     
     // Test ServerOptions struct
-    if (std::getenv("SET") == NULL) {
+    if (std::string(std::getenv("TEST_MODE")) == "1") {
         TEST(test_server_options_empty_environment);
-    } else {
+    } else if (std::string(std::getenv("TEST_MODE")) == "2") {
         TEST(test_server_options_set_environment);
     }
 

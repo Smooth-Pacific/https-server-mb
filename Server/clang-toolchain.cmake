@@ -1,3 +1,7 @@
+# Set standards
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_CXX_STANDARD 20)
+
 # Set compilers
 set(CMAKE_C_COMPILER clang)
 set(CMAKE_CXX_COMPILER clang++)

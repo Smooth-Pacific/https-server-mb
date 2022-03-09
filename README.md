@@ -3,7 +3,7 @@ An https server utilizes a REST api to serve data to the end user
 
 #### Table of Contents
 - [Features](#features)
-- [Install](#features)
+- [Install](#install)
 - [Build](#build-and-run)
 
 ## Features
@@ -12,6 +12,11 @@ An https server utilizes a REST api to serve data to the end user
 
 ## Install
 ### Dependencies
+libhttpserver
+```bash
+chmod +x install-libhttpserver.sh
+./install-libhttpserver.sh
+```
 
 ## Build and Run
 ### Requirements
