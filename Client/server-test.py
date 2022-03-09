@@ -26,8 +26,8 @@ from requests import (
 ## Setup variables ##
 #####################
 
-AUTH_USER="username1"
-AUTH_PASS="password1"
+AUTH_USER="username"
+AUTH_PASS="password"
 
 HOST = "127.0.0.1" 
 PORT = 8080
@@ -50,6 +50,7 @@ def sendGetRequestToRoot() -> None:
     resp = s.get(f"https://{HOST}:{PORT}/")
     s.close()
 
+    print(resp.status_code) # TODO: DEBUG
     if resp.status_code == 200:
         n_passed += 1
     else:
@@ -65,6 +66,7 @@ def sendGetRequestToContent() -> None:
     # Test GET "/content" endpoint (root)
     resp = s.get(f"https://{HOST}:{PORT}/content")
 
+    print(resp.status_code) # TODO: DEBUG
     if resp.status_code == 200 and resp.text.strip() == "This is an example of a plain text resource.":
         n_passed += 1
     else:
@@ -124,10 +126,11 @@ def perform_multi_threaded_test(test_func, test_name: str, n_iterations: int, n_
 if __name__ == "__main__":
 
     # Set global variables
-    if int(os.environ.get("INTERNET_PROTOCOL")) == 1:
-        HOST = "[::1]"
-    else:
-        HOST = "127.0.0.1"
+    if os.environ.get("INTERNET_PROTOCOL") is not None:
+        if os.environ.get("INTERNET_PROTOCOL") == 1:
+            HOST = "[::1]"
+        else:
+            HOST = "127.0.0.1"
     if os.environ.get("PORT"):
         PORT = os.environ.get("PORT")
     if os.environ.get("AUTH_USER"):
@@ -143,10 +146,10 @@ if __name__ == "__main__":
         sys.exit(1)
 
     # Being testing
-    n_passed, n_failed = 0, 0
-    n_iterations = 100
-    perform_single_threaded_test(sendGetRequestToRoot,
-            "Single-threaded stress test of '/'", n_iterations)
+    # n_passed, n_failed = 0, 0
+    # n_iterations = 100
+    # perform_single_threaded_test(sendGetRequestToRoot,
+            # "Single-threaded stress test of '/'", n_iterations)
 
     n_passed, n_failed = 0, 0
     n_iterations = 10
@@ -154,11 +157,7 @@ if __name__ == "__main__":
     perform_multi_threaded_test(sendGetRequestToRoot,
             "Multi-threaded stress test of '/'", n_iterations, n_threads)
 
-    n_passed, n_failed = 0, 0
-    n_iterations = 10
-    perform_single_threaded_test(sendGetRequestToContent,
-            "Single-threaded stress test of '/content'", n_iterations)
-
- # 1317  curl -v -k -XPUT -F text=`python3 -c "print('A' * 100_000)"` https://127.0.0.1:8080/content
- # 1319  curl -v -k -XPOST -F text=`python3 -c "print('A' * 100_000)"` https://127.0.0.1:8080/content
- # 1321  curl -v -k -XDELETE  https://127.0.0.1:8080/content
+    # n_passed, n_failed = 0, 0
+    # n_iterations = 10
+    # perform_single_threaded_test(sendGetRequestToContent,
+            # "Single-threaded stress test of '/content'", n_iterations)

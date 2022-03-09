@@ -9,6 +9,7 @@ all: utopia-server
 utopia-server: $(BIN) $(SERVER)
 	cd $(SERVER) && make release
 	cp $(SERVER)/Bin/utopia-server.exe ./Bin/utopia-server.exe
+	cp $(SERVER)/Bin/utopia-server-tests.exe ./Bin/utopia-server-tests.exe
 
 .PHONY: $(BIN)
 $(BIN):

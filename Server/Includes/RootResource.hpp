@@ -6,6 +6,11 @@
 
 #include <httpserver.hpp>
 
+#ifndef NDEBUG
+#include <chrono>
+#include <thread>
+#endif // NDEBUG
+
 using namespace httpserver;
 
 class root_resource : public http_resource, public Authorization, public Logger {
@@ -15,6 +20,10 @@ public: // http_resource overloads
         return std::shared_ptr<http_response>(new string_response("Welcome to the Utopia Server."));
     }
     const std::shared_ptr<httpserver::http_response> render_GET(const httpserver::http_request& req) {
+#ifndef NDEBUG
+        //std::this_thread::sleep_for(std::chrono::milliseconds(500u));
+#endif // NDEBUG
+
         if (req.get_digested_user() != Username()) {
             log_failure(req);
             return std::shared_ptr<httpserver::digest_auth_fail_response>(new httpserver::digest_auth_fail_response("FAIL", "test@example.com", Opaque(), true));

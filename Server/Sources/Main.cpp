@@ -39,7 +39,8 @@ int main() {
 #else
         .pedantic()
 #endif // NDEBUG
-        .per_IP_connection_limit(so.PerIpConnectionLimit())
+        //.per_IP_connection_limit(so.PerIpConnectionLimit()) // TODO: Debug
+        .per_IP_connection_limit(-1) // TODO: Debug
         .connection_timeout(so.Timeout())
         .content_size_limit(so.ContentSizeLimit())
         .max_connections(so.MaxConnections())

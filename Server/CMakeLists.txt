@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.8.0)
 
 ## Initialize project
-project("utopia-server.exe" CXX)
-set(TARGET "utopia-server.exe")
+project("utopia-server" CXX)
+set(TARGET "utopia-server")
 
 ## Include directories
 include_directories(${TARGET} ${CMAKE_SOURCE_DIR}/Includes)
@@ -37,8 +37,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Bin)
 
 ## Application executable and link dependencies
 add_executable(${TARGET} ${SOURCES})
+set_target_properties(
+    ${TARGET}
+    PROPERTIES
+    OUTPUT_NAME ${TARGET}
+    PREFIX ""
+    SUFFIX ".exe"
+)
 
-# ------------- TESTING ------------- #
 
 ## Add link directories
 target_link_directories(${TARGET} PRIVATE /usr/local/lib)
@@ -46,9 +52,11 @@ target_link_directories(${TARGET} PRIVATE /usr/local/lib)
 ## Link Dependencies
 target_link_libraries(${TARGET} httpserver microhttpd pthread)
 
+# ------------- TESTING ------------- #
+
 ## Add testing support
-project("run-tests" CXX)
-set(TESTS "run-tests")
+project("utopia-server-tests" CXX)
+set(TESTS "utopia-server-tests")
 
 ## Include directories
 include_directories(${TESTS} ${CMAKE_CURRENT_BINARY_DIR}/Includes)
@@ -65,6 +73,7 @@ set(TEST_SOURCES
     ${TESTS_DIR}/TestServerOptions.cpp
     ${SOURCE_DIR}/Authorization.cpp
     ${SOURCE_DIR}/Logger.cpp
+    ${SOURCE_DIR}/PerformanceMonitor.cpp
     ${SOURCE_DIR}/ServerOptions.cpp
     # CXX includes
     ${TESTS_DIR}/TestSuite.hpp
@@ -80,6 +89,13 @@ set(TEST_SOURCES
 
 ## Test executable and link dependencies
 add_executable(${TESTS} ${TEST_SOURCES}) 
+set_target_properties(
+    ${TESTS}
+    PROPERTIES
+    OUTPUT_NAME ${TESTS}
+    PREFIX ""
+    SUFFIX ".exe"
+)
 
 ## Link Dependencies
 target_link_libraries(${TESTS} httpserver microhttpd)
